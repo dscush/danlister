@@ -7,15 +7,15 @@ import (
   "io/ioutil"
 )
 
-func printText(path string, depth int) {
+func printText(path string, depth int, recursive bool) {
   files, _ := ioutil.ReadDir(path)
   for _, file := range files {
     for i := 0; i < depth; i ++ {
       fmt.Print("  ")
     }
     fmt.Println(file.Name())
-    if file.IsDir() {
-      printText(filepath.Join(path, file.Name()), depth + 1)
+    if recursive && file.IsDir() {
+      printText(filepath.Join(path, file.Name()), depth + 1, recursive)
     }
   }
 }
@@ -39,6 +39,6 @@ func main() {
   }
 
   fmt.Println(root)
-  printText(root, 1)
+  printText(root, 1, recursive)
 }
 
