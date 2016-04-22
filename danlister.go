@@ -3,10 +3,22 @@ package main
 import (
   "fmt"
   "path/filepath"
-  "os"
-  "strings"
   "flag"
+  "io/ioutil"
 )
+
+func printText(path string, depth int) {
+  files, _ := ioutil.ReadDir(path)
+  for _, file := range files {
+    for i := 0; i < depth; i ++ {
+      fmt.Print("  ")
+    }
+    fmt.Println(file.Name())
+    if file.IsDir() {
+      printText(filepath.Join(path, file.Name()), depth + 1)
+    }
+  }
+}
 
 func main() {
   var root, output string
@@ -25,28 +37,8 @@ func main() {
     fmt.Println("Must provide path.  Try 'danlister --help' for usage")
     return
   }
-  
-  base_depth := strings.Count(root, "/")
 
-  var printText = func(path string, fi os.FileInfo, _ error) (err error) {
-    if path == root {
-      fmt.Println(root)
-      return
-    }
-    depth := strings.Count(path, "/") - base_depth
-    for i := 0; i < depth; i ++ {
-      fmt.Print("  ")
-    }
-    name := fi.Name()
-    if fi.IsDir() {
-      name += "/"
-    }
-    fmt.Println(name)
-    return
-  }
-
-
-
-  filepath.Walk(root, printText)
+  fmt.Println(root)
+  printText(root, 1)
 }
 
