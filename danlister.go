@@ -8,6 +8,7 @@ import (
   "io/ioutil"
   "time"
   "encoding/json"
+  "gopkg.in/yaml.v2"
 )
 
 type FileInfo struct {
@@ -95,7 +96,8 @@ func main() {
       f, _ := json.MarshalIndent(fileTree, "", "  ")
       fmt.Println(string(f))
     } else {
-      fmt.Println("TODO: yaml")
+      f, _ := yaml.Marshal(fileTree)
+      fmt.Println(string(f))
     }
   } else {
     fmt.Println(root)
