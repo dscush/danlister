@@ -7,6 +7,7 @@ import (
   "flag"
   "io/ioutil"
   "time"
+  "strings"
   "encoding/json"
   "gopkg.in/yaml.v2"
 )
@@ -90,6 +91,7 @@ func main() {
     return
   }
 
+  output = strings.ToLower(output)
   if output == "json" || output == "yaml" {
     fileTree := getChildren(root, recursive)
     if output == "json" {
